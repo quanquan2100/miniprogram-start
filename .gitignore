@@ -4,3 +4,4 @@
 node_modules
 dist
 src/components/zanui
+package-lock.json
