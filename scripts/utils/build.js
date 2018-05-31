@@ -41,11 +41,11 @@ gulp.task('compile-js', () => {
     .pipe(gulp.dest(options.dist));
 });
 
-gulp.task('image', () =>
+gulp.task('compile-img', () =>
   gulp.src(['../../src/assets/**/*.{jpg,jpeg,png,gif,svg}'])
-  .pipe(gulpif(isProduction, imagemin()))
+  .pipe(gulpif(isProduction === 'production', imagemin()))
   .pipe(gulp.dest('dist'))
 );
 
 
-gulp.task('build', ['compile-css', 'compile-js']);
+gulp.task('build', ['compile-css', 'compile-js', 'compile-img']);
