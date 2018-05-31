@@ -3,7 +3,7 @@ const fs = require('fs-extra');
 const nodeWatch = require('node-watch');
 require('shelljs/global');
 
-module.exports = function (config = {}) {
+module.exports = function(config = {}) {
   // 清空 dist 目录
   fs.emptyDirSync(config.dist);
 

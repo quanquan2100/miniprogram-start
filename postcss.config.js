@@ -4,8 +4,7 @@ const autoprefixer = require('autoprefixer');
 const postcssCalc = require('postcss-calc');
 
 module.exports = {
-  plugins: [
-    postcssEasyImport({
+  plugins: [postcssEasyImport({
       extensions: ['.wxss', '.css', '.pcss']
     }),
     precss(),

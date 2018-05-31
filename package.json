@@ -38,5 +38,8 @@
     "postcss-easy-import": "^3.0.0",
     "precss": "^2.0.0",
     "shelljs": "^0.7.8"
+  },
+  "dependencies": {
+    "gulp-imagemin": "^4.1.0"
   }
 }

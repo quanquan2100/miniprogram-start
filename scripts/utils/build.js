@@ -3,6 +3,8 @@ const postcss = require('gulp-postcss');
 const cssmin = require('gulp-clean-css');
 const rename = require('gulp-rename');
 const gutil = require('gulp-util');
+const gulpif = require('gulp-if');
+const imagemin = require('gulp-imagemin');
 const removeLogging = require('gulp-remove-logging');
 const babel = require('gulp-babel');
 
@@ -25,7 +27,9 @@ gulp.task('compile-js', () => {
       methods: isProduction ? ['log', 'info'] : []
     }))
     .pipe(babel({
-      plugins: [['transform-object-rest-spread', { useBuiltIns: true }]],
+      plugins: [
+        ['transform-object-rest-spread', { useBuiltIns: true }]
+      ],
       presets: [
         ['env', {
           loose: true,
@@ -36,5 +40,12 @@ gulp.task('compile-js', () => {
     }))
     .pipe(gulp.dest(options.dist));
 });
+
+gulp.task('image', () =>
+  gulp.src(['../../src/assets/**/*.{jpg,jpeg,png,gif,svg}'])
+  .pipe(gulpif(isProduction, imagemin()))
+  .pipe(gulp.dest('dist'))
+);
+
 
 gulp.task('build', ['compile-css', 'compile-js']);
