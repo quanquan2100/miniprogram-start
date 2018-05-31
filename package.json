@@ -1,0 +1,42 @@
+{
+  "name": "miniprogram-beginner",
+  "version": "0.1.0",
+  "description": "小程序开发起始模板",
+  "main": "app.js",
+  "scripts": {
+    "dev": "node scripts/build-dev.js --color",
+    "build": "cross-env NODE_ENV=production gulp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/npm/npm.git"
+  },
+  "author": "quanquan2100",
+  "license": "MIT",
+  "devDependencies": {
+    "autoprefixer": "^8.5.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.3",
+    "babel-plugin-transform-es2015-spread": "^6.22.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "cross-env": "^5.1.4",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "fs-extra": "^4.0.2",
+    "gh-pages": "^1.1.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.1",
+    "gulp-clean-css": "^3.9.0",
+    "gulp-postcss": "^7.0.0",
+    "gulp-remove-logging": "^1.2.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-util": "^3.0.8",
+    "node-watch": "^0.5.5",
+    "postcss-calc": "^6.0.1",
+    "postcss-easy-import": "^3.0.0",
+    "precss": "^2.0.0",
+    "shelljs": "^0.7.8"
+  }
+}
