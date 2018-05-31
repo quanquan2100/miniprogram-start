@@ -10,7 +10,7 @@ const options = gutil.env;
 const isProduction = process.env.NODE_ENV === 'production';
 
 gulp.task('compile-css', () => {
-  return gulp.src(['../../packages/**/*.pcss', '!../../packages/**/_*.pcss'])
+  return gulp.src('../../src/**/*.pcss')
     .pipe(postcss())
     .pipe(cssmin())
     .pipe(rename((path) => {
@@ -20,7 +20,7 @@ gulp.task('compile-css', () => {
 });
 
 gulp.task('compile-js', () => {
-  return gulp.src(['../../packages/**/*.js'])
+  return gulp.src(['../../src/**/*.js'])
     .pipe(removeLogging({
       methods: isProduction ? ['log', 'info'] : []
     }))
