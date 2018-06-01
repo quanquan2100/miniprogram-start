@@ -14,6 +14,7 @@
   "author": "quanquan2100",
   "license": "MIT",
   "devDependencies": {
+    "ajv-keywords": "3.2.0",
     "autoprefixer": "^8.5.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
@@ -22,27 +23,27 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
     "cross-env": "^5.1.4",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint": "4.9.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.7.0",
     "fs-extra": "^4.0.2",
     "gh-pages": "^1.1.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.1",
     "gulp-clean-css": "^3.9.0",
+    "gulp-if": "^2.0.2",
+    "gulp-imagemin": "^4.1.0",
     "gulp-postcss": "^7.0.0",
     "gulp-remove-logging": "^1.2.0",
     "gulp-rename": "^1.2.2",
     "gulp-util": "^3.0.8",
+    "lodash": "^4.17.10",
     "node-watch": "^0.5.5",
     "postcss-calc": "^6.0.1",
     "postcss-easy-import": "^3.0.0",
     "precss": "^2.0.0",
-    "shelljs": "^0.7.8"
-  },
-  "dependencies": {
-    "gulp-if": "^2.0.2",
-    "gulp-imagemin": "^4.1.0",
-    "lodash": "^4.17.10",
+    "shelljs": "^0.7.8",
     "yargs": "^11.0.0"
-  }
+  },
+  "dependencies": {}
 }
