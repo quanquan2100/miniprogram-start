@@ -48,7 +48,7 @@ gulp.task('compile-js', () => {
 });
 
 gulp.task('compile-json', () => {
-  return gulp.src([options.src + '/**/*.json'])
+  return gulp.src([options.src + '/**/*.json', `!${options.src}/project.config.json`])
     .pipe(gulpif(isProduction, jsonminify()))
     .pipe(gulp.dest(options.dist));
 });

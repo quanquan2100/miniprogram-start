@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * 使用教程 在项目目录中执行如下命令创建新页面
- * 
+ *
  *  npm run add -- --page=test/abc
  *  以 src/pages 为base目录 创建 test/abc文件夹,并在此文件夹中创建 index.[js|wxml|pcss|json|..] 等预设的页面模板文件
  */
@@ -21,22 +21,20 @@ const src_base_dir = path.join(project_root_dir, 'src','pages');
 const comp_base_dir = path.join(project_root_dir, 'src','components');
 
 
-console.log("源码目录: ",src_base_dir);
-
 function addPageFile(newPagePath) {
   // 之查找 template/page/下一级文件,不查找深层目录
   glob(page_tpl_dir + "/*.*", function(er, files) {
     if (er) {
-      console.log("模板文件查找出错: ", er);
+      console.error("模板文件查找出错: ", er);
     } else {
       // console.log("页面模板集合: ", files);
       var noerror = true;
       _.forEach(files, function(src) {
         const dest = path.join(newPagePath, path.basename(src));
         fs.copy(src, dest, err => {
-          if (err) { 
+          if (err) {
           	noerror = false;
-          	return console.error(err); 
+          	return console.error(err);
           }
         });
       });
@@ -50,10 +48,10 @@ function addPageFile(newPagePath) {
 function addPage() {
   const pageUrl = path.join(src_base_dir, argv.page);
   const checkFilePath = path.join(pageUrl, "index.wxml");
-  console.log("checkPath: ", checkFilePath);
+
   fs.access(checkFilePath, fs.constants.F_OK | fs.constants.W_OK, (err) => {
     if (!err) {
-      console.log(`${checkFilePath} 已存在,请重新指定新页面的路径`);
+      console.log(`${checkFilePath} 已存在, 请重新指定新页面的路径`);
     } else {
       console.log(`页面创建中....`);
       fs.ensureDir(pageUrl, err => {
