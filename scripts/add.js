@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 /**
  * 使用教程 在项目目录中执行如下命令创建新页面
  * 
@@ -16,52 +15,53 @@ const project_root_dir = path.dirname(__dirname);
 const tpl_base_dir = path.join(project_root_dir, 'template');
 const page_tpl_dir = path.join(tpl_base_dir, 'page');
 const component_tpl_dir = path.join(tpl_base_dir, 'component');
-const src_base_dir = path.join(project_root_dir, 'src');
+
+const src_base_dir = path.join(project_root_dir, 'src','pages');
+const comp_base_dir = path.join(project_root_dir, 'src','components');
 
 
+console.log("源码目录: ",src_base_dir);
 
 function addPageFile(newPagePath) {
-  var newPageDir = path.dirname(newPagePath);
-  var newPageName = path.basename(newPagePath);
-  console.log("模板目录: ", page_tpl_dir + "/*.*");
-  console.log("新文件名: ", newPageName);
   // 之查找 template/page/下一级文件,不查找深层目录
   glob(page_tpl_dir + "/*.*", function(er, files) {
     if (er) {
       console.log("模板文件查找出错: ", er);
     } else {
-      console.log("页面模板集合: ", files);
-      _.forEach(files,function(src){
-      	const dest = path.join(newPageDir,(newPageName+path.extname(src)));
-	      fs.copy(src, dest, err => {
-	        if (err) { return console.error(err); }
-	        console.log('success!');
-	      });
+      // console.log("页面模板集合: ", files);
+      var noerror = true;
+      _.forEach(files, function(src) {
+        const dest = path.join(newPagePath, path.basename(src));
+        fs.copy(src, dest, err => {
+          if (err) { 
+          	noerror = false;
+          	return console.error(err); 
+          }
+        });
       });
+      if(noerror){
+      	console.log("新页面创建成功! 位于: ",newPagePath);
+      }
     }
-  })
+  });
 }
 
 function addPage() {
   const pageUrl = path.join(src_base_dir, argv.page);
-  const checkFilePath = pageUrl + ".wxml";
-
+  const checkFilePath = path.join(pageUrl, "index.wxml");
   console.log("checkPath: ", checkFilePath);
-
   fs.access(checkFilePath, fs.constants.F_OK | fs.constants.W_OK, (err) => {
     if (!err) {
       console.log(`${checkFilePath} 已存在,请重新指定新页面的路径`);
     } else {
-      console.log(`模板创建中....`);
-      fs.ensureDir(path.dirname(pageUrl), err => {
+      console.log(`页面创建中....`);
+      fs.ensureDir(pageUrl, err => {
         if (err) {
           console.log('新页面所在路径创建错误: ', err);
         } else {
           addPageFile(pageUrl);
         }
-        // dir has now been created, including the directory it is to be placed in
-
-      })
+      });
     }
   });
 }
