@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "dev": "node scripts/build-dev.js --color",
-    "build": "cross-env NODE_ENV=production gulp build"
+    "build": "cross-env NODE_ENV=production gulp build",
+    "add": "scripts/add.js"
   },
   "repository": {
     "type": "git",
