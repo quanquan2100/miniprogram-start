@@ -2,7 +2,8 @@
 /**
  * 使用教程 在项目目录中执行如下命令创建新页面
  * 
- *  ./scripts/add.js --page=pages/test/abc
+ *  npm run add -- --page=test/abc
+ *  以 src/pages 为base目录 创建 test/abc文件夹,并在此文件夹中创建 index.[js|wxml|pcss|json|..] 等预设的页面模板文件
  */
 
 const path = require('path');
