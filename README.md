@@ -29,7 +29,9 @@ npm run build
 ```
 # 添加页面
 cd [项目文件夹]
-npm run dev
+npm run add -- --page=index
+# 添加组件
+npm run add -- --comp=index
 ```
 # 使用方式
 1. 下载本项目
