@@ -6,6 +6,8 @@ const gutil = require('gulp-util');
 const gulpif = require('gulp-if');
 const fs = require('fs');
 const path = require('path');
+const plumber = require('gulp-plumber');
+const notify = require('gulp-notify');
 
 const options = gutil.env;
 const isProduction = process.env.NODE_ENV === 'production';
@@ -23,6 +25,9 @@ if (isDirectory) {
 
 gulp.task('compile-css', () => {
   return gulp.src(src)
+    .pipe(plumber({
+      errorHandler: notify.onError("Error: <%= error.message %>")
+    }))
     .pipe(postcss())
     .pipe(gulpif(isProduction, cssmin()))
     .pipe(rename((path) => {

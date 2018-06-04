@@ -44,6 +44,7 @@ module.exports = function(config = {}) {
     exec(`gulp dev --gulpfile scripts/utils/build.js --dist ${config.dist} --src ${config.src} --color`);
   }
 
+  console.log(chalk.gray('监听变动中...'));
   // 2. 监听文件变动
   if (isProduction) {
     console.log("构建完毕, 尝试打开小程序");
@@ -80,6 +81,7 @@ module.exports = function(config = {}) {
         fs.unlinkSync(distName);
       }
 
+      console.log(chalk.gray('监听变动中...'));
     });
 
     // 反向监听 project.config.json 反馈回项目

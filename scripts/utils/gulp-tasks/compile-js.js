@@ -7,6 +7,8 @@ const uglify = require('gulp-uglify');
 const stripDebug = require('gulp-strip-debug');
 const fs = require('fs');
 const path = require('path');
+const plumber = require('gulp-plumber');
+const notify = require('gulp-notify');
 
 const options = gutil.env;
 const isProduction = process.env.NODE_ENV === 'production';
@@ -24,6 +26,9 @@ if (isDirectory) {
 
 gulp.task('compile-js', () => {
   return gulp.src(src)
+    .pipe(plumber({
+      errorHandler: notify.onError("Error: <%= error.message %>")
+    }))
     .pipe(babel({
       plugins: [
         ['transform-object-rest-spread', {
