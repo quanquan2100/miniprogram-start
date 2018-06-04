@@ -1,77 +1,48 @@
 #!/usr/bin/env node
 /**
  * 使用教程 在项目目录中执行如下命令创建新页面
- *
- *  npm run add -- --page=test/abc
+  *  npm run add -- --page=test/abc
  *  以 src/pages 为base目录 创建 test/abc文件夹,并在此文件夹中创建 index.[js|wxml|pcss|json|..] 等预设的页面模板文件
  */
-
 const path = require('path');
 const _ = require('lodash');
 const fs = require('fs-extra');
-const argv = require('yargs').argv;
-const glob = require("glob");
-const project_root_dir = path.dirname(__dirname);
+const yargs = require('yargs');
+const chalk = require('chalk');
 
-const tpl_base_dir = path.join(project_root_dir, 'template');
-const page_tpl_dir = path.join(tpl_base_dir, 'page');
-const component_tpl_dir = path.join(tpl_base_dir, 'component');
+(function () {
+  // step:1 参数验证
+  const argv = yargs.argv
+  if (_.isEmpty(argv.page) && _.isEmpty(argv.comp)) {
+    console.log(`添加出错: 请指定需要添加的页面/组件路径, 检查您的命令格式, 示例: 'npm run add -- --page=index1'`)
+    return;
+  }
 
-const src_base_dir = path.join(project_root_dir, 'src','pages');
-const comp_base_dir = path.join(project_root_dir, 'src','components');
+  // step:2 计算源和目标路径
+  const name = _.isEmpty(argv.page) ? '组件' : '页面';
+  const type = _.isEmpty(argv.page) ? "component" : "page";
+  const targetFile = _.isEmpty(argv.page) ? argv.comp : argv.page;
+  const targetDir = path.resolve(__dirname, `../src/${type}s`); // 目标文件夹路径
+  const templateDir = path.resolve(__dirname, `../template/${type}`); // 模板文件夹路径
 
+  // step:2 验证源和目标路径
+  if (!fs.existsSync(templateDir)) {
+    console.log(chalk.red(`添加出错: 模板目录不存在, 请检查 template 目录正确 (${templateDir})`));
+    return;
+  }
 
-function addPageFile(newPagePath) {
-  // 之查找 template/page/下一级文件,不查找深层目录
-  glob(page_tpl_dir + "/*.*", function(er, files) {
-    if (er) {
-      console.error("模板文件查找出错: ", er);
-    } else {
-      // console.log("页面模板集合: ", files);
-      var noerror = true;
-      _.forEach(files, function(src) {
-        const dest = path.join(newPagePath, path.basename(src));
-        fs.copy(src, dest, err => {
-          if (err) {
-          	noerror = false;
-          	return console.error(err);
-          }
-        });
-      });
-      if(noerror){
-      	console.log("新页面创建成功! 位于: ",newPagePath);
-      }
-    }
-  });
-}
+  if (fs.existsSync(path.join(targetDir, targetFile, '/index.wxml'))) {
+    console.log(chalk.red(`添加出错: ${targetFile} ${name}已存在, 请更换路径或删除无用的${name}`));
+    return;
+  }
+  
+  // step:3 拷贝
+  try {
+    fs.copySync(templateDir, path.join(targetDir, targetFile));
+  } catch (err) {
+    console.log(chalk.red(`添加出错: 拷贝期间出现错误 ${err}`))
+    return;
+  }
 
-function addPage() {
-  const pageUrl = path.join(src_base_dir, argv.page);
-  const checkFilePath = path.join(pageUrl, "index.wxml");
-
-  fs.access(checkFilePath, fs.constants.F_OK | fs.constants.W_OK, (err) => {
-    if (!err) {
-      console.log(`${checkFilePath} 已存在, 请重新指定新页面的路径`);
-    } else {
-      console.log(`页面创建中....`);
-      fs.ensureDir(pageUrl, err => {
-        if (err) {
-          console.log('新页面所在路径创建错误: ', err);
-        } else {
-          addPageFile(pageUrl);
-        }
-      });
-    }
-  });
-}
-
-function addComponent() {
-
-}
-
-// ./script/add.js --page=
-if (!_.isEmpty(argv.page)) {
-  addPage();
-} else if (argv.comp) {
-  addComponent();
-}
+  console.log(chalk`${name} {bold ${targetFile}} 已成功添加, 请前往 {cyan.bold '${path.join(targetDir, targetFile)}' 进行后续开发}`)
+}())
