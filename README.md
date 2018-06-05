@@ -24,6 +24,12 @@ npm run build
 * 支持根据模板添加页面/组件
     - 模板为 `template` 文件夹, `page` 文件夹表示页面模板, `component` 文件夹表示组件模板
     - 可根据需要自行编辑模板
+* 支持小程序页面级事件系统
+    - this 可以为当前 Page 也可以为 App
+    - this.$on(name, callback)
+    - this.$one(name, callback)
+    - this.$off(eventId)
+    - this.$emit(name, data)
 
 **使用方式**
 ```shell
@@ -42,6 +48,6 @@ npm run add -- --comp=index
 4. 如果新建项目, 将小程序 IDE 路径指向`dist` 文件夹. 创建基础页面模板后拷贝进 `src`
 
 ## 下一步
-* 添加事件系统相关代码, 弥补小程序跨页面事件模块功能缺失
+* ~~添加事件系统相关代码, 弥补小程序跨页面事件模块功能缺失~~
 * 自动转化现有项目为所需项目要求. 比如, 自动转化 `.wxss` 为 `.pcss`
 * 项目文档自动构建
