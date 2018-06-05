@@ -1,40 +1,30 @@
 import util from "./utils/util"
-import hello from "./utils/event";
+import Event from "./utils/event";
 App({
-  onLaunch: function () {
-    // 展示本地存储能力
-    var logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
-
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+  ...Event,
+  /**
+   * 重写 runevent 函数, 由于app 主程序跟页面的生命周期不同, 只需要监听即执行
+   * @return {[type]} [description]
+   */
+  $runEvent: function(event) {
+    this.$eventPool = this.$eventPool || [];
+    this.$eventPool = this.$eventPool.filter(item => (item !== null))
+    // 使用闭包以支持异步函数
+    this.$eventPool.forEach((listen, index) => {
+      if (listen.name !== event.name) {
+        return;
       }
-    })
-    // 获取用户信息
-    wx.getSetting({
-      success: res => {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-          wx.getUserInfo({
-            success: res => {
-              // 可以将 res 发送给后台解码出 unionId
-              this.globalData.userInfo = res.userInfo
+      (function(_this, listen, event, index) {
+        listen.callback(event)
 
-              // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-              // 所以此处加入 callback 以防止这种情况
-              if (this.userInfoReadyCallback) {
-                this.userInfoReadyCallback(res)
-              }
-            }
-          })
+        if (listen.once) {
+          _this.$eventPool[index] = null;
         }
-      }
+      })(this, listen, event, index);
     })
   },
   globalData: {
     userInfo: null
-  }
+  },
+  onLaunch: function() {},
 })
