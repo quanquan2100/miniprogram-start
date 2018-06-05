@@ -5,6 +5,7 @@ const http = require('http');
 require('shelljs/global');
 const chalk = require('chalk');
 const os = require('os');
+const rimraf = require('rimraf');
 
 const isProduction = process.env.NODE_ENV === 'production';
 const regx = /project\.config\.json$/; // 项目配置文件正则
@@ -53,7 +54,7 @@ module.exports = function(config = {}) {
     nodeWatch(config.src, {
       recursive: true,
       filter: (src) => {
-        return (!regx.test(src) && !regx_md.test(src))
+        return (!regx.test(src) && !regx_md.test(src) && !/\.DS_Store/.test(src))
       }
     }, (evt, name) => {
       if (evt == 'update') {
@@ -67,18 +68,35 @@ module.exports = function(config = {}) {
           case ['.pcss'].indexOf(extname) >= 0:
             exec(`gulp compile-css --gulpfile scripts/utils/gulp-tasks/compile-css.js --dist ${distName} --src ${name} --color`);
             break;
+          case fs.lstatSync(name).isDirectory():
+            console.log('copy folder', chalk.blue.bold(name), 'to', chalk.blue.bold(distName))
+            fs.copySync(name, distName, {
+              filter(src = '') {
+                const extname = path.extname(src);
+                return ['.js', '.pcss', '.md'].indexOf(extname) < 0;
+              }
+            });
+            exec(`gulp dev --gulpfile scripts/utils/build.js --dist ${distName} --src ${name} --color`);
+            break;
           default:
-            // 执行拷贝
-            console.log('copy', chalk.blue.bold(name), 'to', chalk.blue.bold(distName))
-            fs.copySync(name, distName);
+            if (fs.lstatSync(name).isFile()) {
+              console.log('copy file', chalk.blue.bold(name), 'to', chalk.blue.bold(distName))
+              fs.copySync(name, distName);
+            }
         }
       }
 
       if (evt == 'remove') {
         // on delete, run del
         const distName = getDistPath(name, config);
-        console.log("delete " + chalk.red.bold(distName))
-        fs.unlinkSync(distName);
+        if (fs.lstatSync(distName).isFile()) {
+          console.log("delete file: " + chalk.red.bold(distName))
+          fs.unlinkSync(distName);
+        }
+        if (fs.lstatSync(distName).isDirectory() && fs.existsSync(distName)) {
+          console.log("delete folder: " + chalk.red.bold(distName))
+          rimraf.sync(distName);
+        }
       }
 
       console.log(chalk.gray('监听变动中...'));
