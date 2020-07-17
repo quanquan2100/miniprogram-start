@@ -46,7 +46,7 @@
     "gulp-strip-debug": "^3.0.0",
     "gulp-uglify": "^3.0.2",
     "gulp-util": "^3.0.8",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "node-watch": "^0.6.2",
     "postcss-calc": "^7.0.1",
     "postcss-easy-import": "^3.0.0",
