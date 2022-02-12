@@ -15,7 +15,7 @@
   "author": "quanquan2100",
   "license": "MIT",
   "devDependencies": {
-    "ajv": "^6.10.0",
+    "ajv": "^6.12.3",
     "ajv-keywords": "^3.4.0",
     "autoprefixer": "^9.6.0",
     "babel-core": "^6.26.3",
